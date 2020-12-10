@@ -4,3 +4,4 @@ update for build test
 Check build artifacts.
 Updating for checking
 Check the artifacts success.
+Check artifact failure
