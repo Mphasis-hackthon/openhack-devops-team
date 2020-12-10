@@ -26,7 +26,7 @@ jobs:
       run: dotnet restore  apis/poi/web/poi.csproj
         
     - name: Build and Publish Web App
-      run: msbuild SimpleFrameworkApp.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
+      run: msbuild apis/poi/web/poi.csproj /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
  
     #- name: Build
     #    run: dotnet build --configuration Release --no-restore apis/poi/web/poi.csproj
