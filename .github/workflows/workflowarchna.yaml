@@ -25,7 +25,7 @@ jobs:
       run: dotnet test --no-restore --verbosity normal #apis/poi/tests/UnitTests/UnitTests.csproj 
     - name: Open Github Issue
       if: failure()
-    - uses: rishabhgupta/git-action-issue@v2
+      uses: rishabhgupta/git-action-issue@v2
       id: Issue
       with:
           token: ${{ secrets.GITHUB_TOKEN }}
