@@ -23,10 +23,11 @@ jobs:
           name: poi.dll
           path: apis/poi/web/bin/Release/netcoreapp2.1/
     - name: Build container image
-      uses: docker/build-push-action@v1
+      uses: docker/build-push-action@v2
       with:
          username: ${{github.actor}}
          password: ${{secrets.GITHUB_TOKEN}}
          registry: docker.pkg.github.com
-         repository: mphasis-hackthon/openhack-devops-team/apis/poi/web
+         file: apis/poi/web/Dockerfile  
+         repository: mphasis-hackthon/openhack-devops-team
          tag_with_sha: true
