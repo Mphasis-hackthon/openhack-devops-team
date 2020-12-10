@@ -4,9 +4,12 @@ on:
   push:
     branches: 
     - buvananaji-cicd
+    paths: [apis/poi/**,.github/workflows/dotnetcoreapi.yml]
+      
   pull_request:
     branches: 
     - cicdbranch
+    paths: [apis/poi/**,.github/workflows/dotnetcoreapi.yml]
 
 jobs:
   build:
