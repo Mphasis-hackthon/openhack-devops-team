@@ -2,9 +2,9 @@ name: .NET Core
 
 on:
   push:
-    branches: [ buvananaji-cicd ]
+    branches: buvananaji-cicd
   pull_request:
-    branches: [ cicdbranch ]
+    branches: cicdbranch
 
 jobs:
   build:
