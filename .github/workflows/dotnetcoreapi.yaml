@@ -24,7 +24,19 @@ jobs:
         dotnet-version: 3.1.301
     - name: Install dependencies
       run: dotnet restore  apis/poi/web/poi.csproj
-    - name: Build
-      run: dotnet build --configuration Release --no-restore apis/poi/web/poi.csproj
+        
+    - name: Build and Publish Web App
+      run: msbuild SimpleFrameworkApp.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
+ 
+    #- name: Build
+    #    run: dotnet build --configuration Release --no-restore apis/poi/web/poi.csproj
     - name: Test
-      run: dotnet test --no-restore --verbosity normal apis/poi/tests/UnitTests.csproj
+      run: dotnet test --no-restore --verbosity normal #apis/poi/tests/UnitTests.csproj
+      
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: published_webapp
+        path: bin\Release\Publish
+      
+      
