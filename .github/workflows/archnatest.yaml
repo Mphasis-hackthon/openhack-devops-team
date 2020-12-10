@@ -28,5 +28,5 @@ jobs:
          username: ${{github.actor}}
          password: ${{secrets.GITHUB_TOKEN}}
          registry: docker.pkg.github.com
-         repository: Mphasis-hackthon/openhack-devops-team/apis/poi/web
+         repository: mphasis-hackthon/openhack-devops-team/apis/poi/web
          tag_with_sha: true
