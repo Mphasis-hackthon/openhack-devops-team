@@ -25,7 +25,7 @@ jobs:
       run: dotnet test --no-restore --verbosity normal #apis/poi/tests/UnitTests/UnitTests.csproj 
     - name: Open Github Issue
       if: failure()
-      uses: alialaa/issue-action@v1.0.0
+      uses: alialaa/open-issue@v1.0.0
       with:
         title: build failed
         token: ${{secrets.BOT_GITHUB_TOKEN}}
