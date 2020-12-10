@@ -10,9 +10,7 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
@@ -25,3 +23,22 @@ jobs:
       run: dotnet build --configuration Release --no-restore apis/poi/web/poi.csproj
     - name: Test
       run: dotnet test --no-restore --verbosity normal apis/poi/tests/UnitTests/UnitTests.csproj
+      
+  isuue:
+    needs: [build] 
+    if: (jobs.build.status == 'failure') 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Open Github Issue
+        # You may pin to the exact commit or the version.
+        # uses: alialaa/issue-action@16298c378572dac709364a3b2de16acb02efdc10
+        uses: alialaa/issue-action@v1.0.0
+        with:
+          # Github Token
+          token: 45becacca90b93bc3e45681e3f09f473c130312b
+          # Issue Title
+          title: build failed
+          # Issue Body
+          body: build failed
+          # Issue Assignees
+          assignees: buvananaji
