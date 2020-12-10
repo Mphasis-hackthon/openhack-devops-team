@@ -23,8 +23,10 @@ jobs:
       run: dotnet build --configuration Release --no-restore apis/poi/web/poi.csproj
     - name: Test
       run: dotnet test --no-restore --verbosity normal #apis/poi/tests/UnitTests/UnitTests.csproj 
+  issue:
+    runs-on: ubuntu-latest
+    steps:
     - name: Open Github Issue
-      if: failure()
       uses: rishabhgupta/git-action-issue@v2
       id: Issue
       with:
