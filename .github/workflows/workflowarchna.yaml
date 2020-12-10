@@ -3,11 +3,11 @@ name: .NET Core
 on: 
   push:
     branches: archna
-    paths: apis/poi/**,.github/workflows/workflowarchna.yml
+    paths: [apis/poi/**,.github/workflows/workflowarchna.yml]
   pull_request:
     branches: master
     types: opened
-    paths: apis/poi/**,.github/workflows/workflowarchna.yml
+    paths: [apis/poi/**,.github/workflows/workflowarchna.yml]
 
 jobs:
   build:
