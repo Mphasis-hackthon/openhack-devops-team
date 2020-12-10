@@ -41,7 +41,9 @@ jobs:
     #    path: bin\Release\Publish
     
    # - name: Open Github Issue
-      if: env.WORKFLOW_CONCLUSION == 'failure'
+     # if: env.WORKFLOW_CONCLUSION == 'failure'
+      if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+     #  if: ${{ github.event.workflow_run.conclusion == 'success' }}
     - name: Create issue
       uses: rishabhgupta/git-action-issue@v2
       id: Issue
