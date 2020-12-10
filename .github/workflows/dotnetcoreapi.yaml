@@ -34,14 +34,15 @@ jobs:
     #- name: Test
     #  run: dotnet test --no-restore --verbosity normal #apis/poi/tests/UnitTests.csproj
       
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v1.0.0
-      with:
-        name: published_webapp
-        path: bin\Release\Publish
+   # - name: Upload Artifact
+   #   uses: actions/upload-artifact@v1.0.0
+    #  with:
+    #    name: published_webapp
+    #    path: bin\Release\Publish
     
-    - name: Open Github Issue
+   # - name: Open Github Issue
       if: ${{ failure() }}
+    - name: Create issue
       uses: rishabhgupta/git-action-issue@v2
       id: Issue
       with:
