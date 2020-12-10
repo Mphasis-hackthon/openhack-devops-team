@@ -41,13 +41,13 @@ jobs:
     #    path: bin\Release\Publish
     
    # - name: Open Github Issue
-      if: ${{ failure() }}
+      if: env.WORKFLOW_CONCLUSION == 'failure'
     - name: Create issue
       uses: rishabhgupta/git-action-issue@v2
       id: Issue
       with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          title: Automated Issue creation
+          title: Automated Issue creation for poi project build failure
           body: This issue is created because tests have failed
           assignees: 'buvananaji'
      
