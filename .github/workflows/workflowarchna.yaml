@@ -32,5 +32,3 @@ jobs:
           title: Automated Issue creation
           body: This issue is created because tests have failed
           assignees: 'archnaaju'
-    - run: |
-        echo ${{ steps.issue.outputs.issue }}
