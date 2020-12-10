@@ -6,3 +6,4 @@ Updating for checking
 Check the artifacts success.
 Check artifact failure
 Verify build failures
+Verify changes
