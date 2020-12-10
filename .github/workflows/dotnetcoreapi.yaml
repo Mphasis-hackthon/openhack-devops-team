@@ -27,6 +27,7 @@ jobs:
         
     - name: Build and Publish Web App
       run: msbuild apis/poi/web/poi.csproj /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
+   
  
     #- name: Build
     #    run: dotnet build --configuration Release --no-restore apis/poi/web/poi.csproj
@@ -38,5 +39,17 @@ jobs:
       with:
         name: published_webapp
         path: bin\Release\Publish
+    
+    - name: Open Github Issue
+      if: ${{ failure() }}
+      uses: rishabhgupta/git-action-issue@v2
+      id: Issue
+      with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: Automated Issue creation
+          body: This issue is created because tests have failed
+          assignees: 'buvananaji'
+     
+     
       
       
