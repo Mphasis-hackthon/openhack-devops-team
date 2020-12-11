@@ -38,19 +38,17 @@ jobs:
       with:
         name: POI_Docker_Image
         path: apis/poi/web/
-    - name: Checkout
-      uses: actions/checkout@v1
-    - name: Download built artifact
-      uses: actions/download-artifact@master
+    - name: Build container image
+      uses: docker/build-push-action@v2
       with:
-          name: webpack artifacts
-          path: public
-    - name: Build, Tag, Push
-      uses: mattdavis0351/actions/docker-gpr@v1.3.0
-      with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          image-name: poi-docker
-          build-args: |
+         username: ${{github.actor}}
+         password: ${{secrets.GITHUB_TOKEN}}
+         registry: docker.pkg.github.com
+         file: apis/poi/web/Dockerfile
+         context: apis/poi/web/
+         repository: mphasis-hackthon/openhack-devops-team/poiservice
+         tag_with_sha: true
+         build-args: |
            ENV SQL_USER=${{secrets.DB_USER_NAME}}
            SQL_PASSWORD=${{secrets.DB_PASSWORD}}
            SQL_SERVER=${{secrets.DB_SERVER}}
