@@ -7,6 +7,11 @@ on:
   pull_request:
     branches: master
     paths: [apis/poi/**,.github/workflows/workflowarchna.yml]
+env:
+  staging_url: https://openhackxfa5tiw4poi-staging.azurewebsites.net/api/healthcheck/poi
+  prod_url: https://openhackxfa5tiw4poi.azurewebsites.net/api/healthcheck/poi
+  poi_api_name: openhackxfa5tiw4poi
+  rg_name: openhackxfa5tiw4rg
 
 jobs:
   build:
@@ -45,6 +50,15 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIAL_OPENHACK }}
     - name: deploy poi api
-      run: az webapp config container set --docker-custom-image-name openhackxfa5tiw4acr.azurecr.io/devopsoh/api-poi:${{github.run_number}} --name openhackxfa5tiw4poi --resource-group openhackxfa5tiw4rg --slot openhackxfa5tiw4poi-staging
-        
-      
+      run: az webapp config container set --docker-custom-image-name openhackxfa5tiw4acr.azurecr.io/devopsoh/api-poi:${{github.run_number}} --name $poi_api_name --resource-group $rg_name --slot staging
+    - name: URL Health Check
+      uses: Jtalk/url-health-check-action@v1.3
+      with:
+        url: $staging_url
+    - name: swap slots
+      if: ${{ success() }}
+      run: az webapp deployment slot auto-swap --name $poi_api_name --resource-group $rg_name --slot staging
+    - name: URL Health Check
+      uses: Jtalk/url-health-check-action@v1.3
+      with:
+        url: $prod_url
