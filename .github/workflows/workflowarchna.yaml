@@ -49,5 +49,10 @@ jobs:
            SQL_SERVER=${{secrets.DB_SERVER}}
            SQL_DBNAME=${{secrets.DB_NAME}}
            WEB_SERVER_BASE_URI='https://openhackxfa5tiw4poi.azurewebsites.net'
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: POI_Docker_Image
+        path: apis/poi/web/
 
       
