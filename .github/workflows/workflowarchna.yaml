@@ -49,7 +49,7 @@ jobs:
          repository: mphasis-hackthon/openhack-devops-team/poiservice
          tag_with_sha: true
          build-args: |
-           ENV SQL_USER=${{secrets.DB_USER_NAME}}
+           SQL_USER=${{secrets.DB_USER_NAME}}
            SQL_PASSWORD=${{secrets.DB_PASSWORD}}
            SQL_SERVER=${{secrets.DB_SERVER}}
            SQL_DBNAME=${{secrets.DB_NAME}}
