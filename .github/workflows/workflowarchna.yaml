@@ -35,6 +35,6 @@ jobs:
           assignees: 'archnaaju'
     - name: Build image
       run: |
-        docker build -t docker.pkg.github.com/${{github.actor}}/openhack-devops-team:latest --build-arg SQL_USER=${{secrets.DB_USER_NAME}} --build-arg SQL_PASSWORD=${{secrets.DB_PASSWORD}} --build-arg SQL_SERVER=${{secrets.DB_SERVER}} --build-arg SQL_DBNAME=${{secrets.DB_NAME}} --build-arg WEB_SERVER_BASE_URI=https://openhackxfa5tiw4poi.azurewebsites.net -f https://github.com/Mphasis-hackthon/openhack-devops-team/tree/master/apis/poi/web
+        docker build -t docker.pkg.github.com/${{github.actor}}/openhack-devops-team:latest --build-arg SQL_USER=${{secrets.DB_USER_NAME}} --build-arg SQL_PASSWORD=${{secrets.DB_PASSWORD}} --build-arg SQL_SERVER=${{secrets.DB_SERVER}} --build-arg SQL_DBNAME=${{secrets.DB_NAME}} --build-arg WEB_SERVER_BASE_URI=https://openhackxfa5tiw4poi.azurewebsites.net apis/poi/web
     
       
