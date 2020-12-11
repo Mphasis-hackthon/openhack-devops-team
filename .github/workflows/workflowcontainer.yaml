@@ -32,38 +32,12 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           title: Automated Issue creation
           body: This issue is created because tests have failed
-          assignees: 'archnaaju'
-    docker_build_and_push:
+          assignees: 'buvananaji'
+      docker_build_and_push:
         runs-on: ubuntu-latest
         needs: build
         steps:     
         - uses: actions/checkout@v2
         - name: Azure Container Registry Login
-        run: docker login $registry -u ${{secrets.ACR_USER }​​​​}​​​​ -p ${​​​​{​​​​ secrets.ACR_KEY }​​​​}​​​​
+        run: docker login $registry -u ${{secrets.ACR_USER }} -p ${{ secrets.ACR_KEY }}
  
-    - name: Docker build
-      run: docker build -t $registry/$repository:${​​​​{​​​​github.run_number}​​​​}​​​​ --build-arg build_version=${​​​​{​​​​github.run_number}​​​​}​​​​ $docker_path
- 
-    - name: Docker Push
-      run: docker push $registry/$repository:${​​​​{​​​​github.run_number}​​​​}​​​​  
-    - name: Build container image
-      uses: docker/build-push-action@v2
-      with:
-         username: ${{github.actor}}
-         password: ${{secrets.GITHUB_TOKEN}}
-         registry: docker.pkg.github.com
-         file: apis/poi/web/Dockerfile
-         context: apis/poi/web/
-         repository: mphasis-hackthon/openhack-devops-team
-         tag_with_sha: true
-         build-args: |
-           ENV SQL_USER=${{secrets.DB_USER_NAME}}
-           SQL_PASSWORD=${{secrets.DB_PASSWORD}}
-           SQL_SERVER=${{secrets.DB_SERVER}}
-           SQL_DBNAME=${{secrets.DB_NAME}}
-           WEB_SERVER_BASE_URI='https://openhackxfa5tiw4poi.azurewebsites.net'
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v1.0.0
-      with:
-        name: POI_Docker_Image
-        path: apis/poi/web/
