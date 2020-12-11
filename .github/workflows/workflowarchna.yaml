@@ -33,10 +33,5 @@ jobs:
           title: Automated Issue creation
           body: This issue is created because tests have failed
           assignees: 'archnaaju'
-    - name: Publish
-      run: dotnet build -c Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
-#    - name: Build and deploy package
-#      run: |
-#        cd ./
-#        dotnet publish -c=Release
+
       
