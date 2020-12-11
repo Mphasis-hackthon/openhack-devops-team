@@ -49,16 +49,22 @@ jobs:
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIAL_OPENHACK }}
-    - name: deploy poi api
+    - name: deploy poi api to staginf
       run: az webapp config container set --docker-custom-image-name openhackxfa5tiw4acr.azurecr.io/devopsoh/api-poi:${{github.run_number}} --name $poi_api_name --resource-group $rg_name --slot staging
-    - name: URL Health Check
+    - name: URL Health Check of staging
       uses: Jtalk/url-health-check-action@v1.3
       with:
         url: $staging_url
-    - name: swap slots
+    - name: swap slots with prod
       if: ${{ success() }}
       run: az webapp deployment slot auto-swap --name $poi_api_name --resource-group $rg_name --slot staging
-    - name: URL Health Check
+    - name: URL Health Check of prod
       uses: Jtalk/url-health-check-action@v1.3
       with:
         url: $prod_url
+    - name: stoping staging
+      if: ${{ success() }}
+      run: az webapp stop --name $poi_api_name --resource-group $rg_name --slot staging
+    - name: roll back to old version
+      if: ${{ failure() }}
+      run: az webapp deployment slot auto-swap --name $poi_api_name --resource-group $rg_name --slot staging
