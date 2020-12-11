@@ -7,3 +7,5 @@ Check the artifacts success.
 Check artifact failure
 Verify build failures
 Verify changes
+
+Test the run
