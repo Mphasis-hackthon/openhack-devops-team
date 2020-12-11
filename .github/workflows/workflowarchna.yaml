@@ -40,5 +40,9 @@ jobs:
       run: docker login openhackxfa5tiw4acr.azurecr.io -u ${{ secrets.ACR_USER }} -p ${{ secrets.ACR_KEY }}
     - name: docker push
       run: docker push openhackxfa5tiw4acr.azurecr.io/devopsoh/api-poi:${{github.run_number}} 
+    - name: az login
+      run: az login -u ${{ secrets.AZ_USER_NAME }} -p ${{ secrets.AZ_USER_PASS }}
+    - name: deploy poi api
+      run: az webapp config container set --docker-custom-image-name openhackxfa5tiw4acr.azurecr.io/devopsoh/api-poi:${{github.run_number}} --name openhackxfa5tiw4poi --resource-group openhackxfa5tiw4rg --slot openhackxfa5tiw4poi-staging
         
       
