@@ -48,6 +48,6 @@ jobs:
            SQL_PASSWORD=${{secrets.DB_PASSWORD}}
            SQL_SERVER=${{secrets.DB_SERVER}}
            SQL_DBNAME=${{secrets.DB_NAME}}
-           WEB_SERVER_BASE_URI="https://openhackxfa5tiw4poi.azurewebsites.net"
+           WEB_SERVER_BASE_URI='https://openhackxfa5tiw4poi.azurewebsites.net'
 
       
