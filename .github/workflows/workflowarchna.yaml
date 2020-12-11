@@ -34,5 +34,9 @@ jobs:
           body: This issue is created because tests have failed
           assignees: 'archnaaju'
     - name: Publish
-      run: dotnet publish --configuration Release --output droppoiapi -p:PublishSingleFile=true
+      run: dotnet publish apis/poi/web/poi.csproj --configuration Release --output droppoiapi -p:PublishSingleFile=true
+#    - name: Build and deploy package
+#      run: |
+#        cd ./
+#        dotnet publish -c=Release
       
