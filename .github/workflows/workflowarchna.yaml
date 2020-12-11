@@ -11,7 +11,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    continue-on-error: true
+    #continue-on-error: true
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
@@ -23,7 +23,7 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore apis/poi/web/poi.csproj
     - name: Test      
-      run: dotnet test --no-restore --verbosity normal #apis/poi/tests/UnitTests/UnitTests.csproj 
+      run: dotnet test --no-restore --verbosity normal apis/poi/tests/UnitTests/UnitTests.csproj 
     - name: Open Github Issue
       if: ${{ failure() }}
       uses: rishabhgupta/git-action-issue@v2
