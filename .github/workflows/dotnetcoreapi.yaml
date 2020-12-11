@@ -1,0 +1,55 @@
+name: .NET Core
+
+on:
+  push:
+    branches: 
+    - buvananaji-cicd
+    paths: [apis/poi/**,.github/workflows/dotnetcoreapi.yml]
+      
+  pull_request:
+    branches: 
+    - cicdbranch
+    paths: [apis/poi/**,.github/workflows/dotnetcoreapi.yml]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.301
+    - name: Install dependencies
+      run: dotnet restore  apis/poi/web/poi.csproj
+        
+    - name: Build and Publish Web App
+      run: msbuild apis/poi/web/poi.csproj /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
+   
+ 
+    #- name: Build
+    #    run: dotnet build --configuration Release --no-restore apis/poi/web/poi.csproj
+    - name: Test
+      run: dotnet test --no-restore --verbosity normal apis/poi/tests/UnitTests.csproj
+      
+   # - name: Upload Artifact
+   #   uses: actions/upload-artifact@v1.0.0
+    #  with:
+    #    name: published_webapp
+    #    path: bin\Release\Publish
+  
+    - name: Check failure
+      if: ${{ failure() }}
+      uses: rishabhgupta/git-action-issue@v2
+      id: Issue
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        title: Automated Issue creation not to create on success
+        body: This issue is created because tests have failed
+        assignees: 'buvananaji'
+     
+     
+      
+      
