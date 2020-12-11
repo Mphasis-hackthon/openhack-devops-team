@@ -1,0 +1,70 @@
+name: .NET Core
+
+on: 
+  push:
+    branches: manohar-docker
+    paths: [apis/poi/**,.github/workflows/workflowarchna.yml]
+  pull_request:
+    branches: master
+    paths: [apis/poi/**,.github/workflows/workflowarchna.yml]
+env:
+  staging_url: https://openhackxfa5tiw4poi-staging.azurewebsites.net/api/healthcheck/poi
+  prod_url: https://openhackxfa5tiw4poi.azurewebsites.net/api/healthcheck/poi
+  poi_api_name: openhackxfa5tiw4poi
+  rg_name: openhackxfa5tiw4rg
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    #continue-on-error: true
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.301
+    - name: Install dependencies
+      run: dotnet restore apis/poi/web/poi.csproj
+    - name: Build
+      run: dotnet build --configuration Release --no-restore apis/poi/web/poi.csproj
+    - name: Test      
+      run: dotnet test --no-restore --verbosity normal apis/poi/tests/UnitTests/UnitTests.csproj 
+    - name: Open Github Issue
+      if: ${{ failure() }}
+      uses: rishabhgupta/git-action-issue@v2
+      id: Issue
+      with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          title: Automated Issue creation
+          body: This issue is created because tests have failed
+          assignees: 'archnaaju'
+    - name: Build image
+      run: |
+        docker build -t openhackxfa5tiw4acr.azurecr.io/devopsoh/api-poi:${{github.run_number}} --build-arg SQL_USER=${{secrets.DB_USER_NAME}} --build-arg SQL_PASSWORD=${{secrets.DB_PASSWORD}} --build-arg SQL_SERVER=${{secrets.DB_SERVER}} --build-arg SQL_DBNAME=${{secrets.DB_NAME}} --build-arg WEB_SERVER_BASE_URI=https://openhackxfa5tiw4poi.azurewebsites.net apis/poi/web
+    - name: acr login
+      run: docker login openhackxfa5tiw4acr.azurecr.io -u ${{ secrets.ACR_USER }} -p ${{ secrets.ACR_KEY }}
+    - name: docker push
+      run: docker push openhackxfa5tiw4acr.azurecr.io/devopsoh/api-poi:${{github.run_number}} 
+    - name: Azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIAL_OPENHACK }}
+    - name: deploy poi api to staginf
+      run: az webapp config container set --docker-custom-image-name openhackxfa5tiw4acr.azurecr.io/devopsoh/api-poi:${{github.run_number}} --name $poi_api_name --resource-group $rg_name --slot staging
+    - name: URL Health Check of staging
+      uses: Jtalk/url-health-check-action@v1.3
+      with:
+        url: $staging_url
+    - name: swap slots with prod
+      if: ${{ success() }}
+      run: az webapp deployment slot auto-swap --name $poi_api_name --resource-group $rg_name --slot staging
+    - name: URL Health Check of prod
+      uses: Jtalk/url-health-check-action@v1.3
+      with:
+        url: $prod_url
+    - name: stoping staging
+      if: ${{ success() }}
+      run: az webapp stop --name $poi_api_name --resource-group $rg_name --slot staging
+    - name: roll back to old version
+      if: ${{ failure() }}
+      run: az webapp deployment slot auto-swap --name $poi_api_name --resource-group $rg_name --slot staging
