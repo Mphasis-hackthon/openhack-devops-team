@@ -35,6 +35,10 @@ jobs:
           assignees: 'archnaaju'
     - name: Build image
       run: |
-        docker build -t docker.pkg.github.com/${{github.actor}}/openhack-devops-team:latest --build-arg SQL_USER=${{secrets.DB_USER_NAME}} --build-arg SQL_PASSWORD=${{secrets.DB_PASSWORD}} --build-arg SQL_SERVER=${{secrets.DB_SERVER}} --build-arg SQL_DBNAME=${{secrets.DB_NAME}} --build-arg WEB_SERVER_BASE_URI=https://openhackxfa5tiw4poi.azurewebsites.net apis/poi/web
-    
+        docker build -t openhackxfa5tiw4acr.azurecr.io/${{ secrets.ACR_USER }}/poi:${{github.run_number}} --build-arg SQL_USER=${{secrets.DB_USER_NAME}} --build-arg SQL_PASSWORD=${{secrets.DB_PASSWORD}} --build-arg SQL_SERVER=${{secrets.DB_SERVER}} --build-arg SQL_DBNAME=${{secrets.DB_NAME}} --build-arg WEB_SERVER_BASE_URI=https://openhackxfa5tiw4poi.azurewebsites.net apis/poi/web
+    - name: acr login
+      run: docker login openhackxfa5tiw4acr.azurecr.io -u ${{ secrets.ACR_USER }} -p ${{ secrets.ACR_KEY }}
+    - name: dokcer push
+      run: dokcer push openhackxfa5tiw4acr.azurecr.io/${{ secrets.ACR_USER }}/poi:${{github.run_number}} 
+        
       
