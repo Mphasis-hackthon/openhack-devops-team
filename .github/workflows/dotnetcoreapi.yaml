@@ -31,8 +31,8 @@ jobs:
  
     #- name: Build
     #    run: dotnet build --configuration Release --no-restore apis/poi/web/poi.csproj
-    #- name: Test
-    #  run: dotnet test --no-restore --verbosity normal #apis/poi/tests/UnitTests.csproj
+    - name: Test
+      run: dotnet test --no-restore --verbosity normal apis/poi/tests/UnitTests.csproj
       
    # - name: Upload Artifact
    #   uses: actions/upload-artifact@v1.0.0
