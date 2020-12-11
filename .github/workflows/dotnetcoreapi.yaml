@@ -39,19 +39,16 @@ jobs:
     #  with:
     #    name: published_webapp
     #    path: bin\Release\Publish
-    
-   # - name: Open Github Issue
-     # if: env.WORKFLOW_CONCLUSION == 'failure'
-      if: ${{ github.event.workflow_run.conclusion == 'failure' }}
-     #  if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    - name: Create issue
+  
+    - name: Check failure
+      if: ${{ failure() }}
       uses: rishabhgupta/git-action-issue@v2
       id: Issue
       with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          title: Automated Issue creation for poi project build failure
-          body: This issue is created because tests have failed
-          assignees: 'buvananaji'
+        token: ${{ secrets.GITHUB_TOKEN }}
+        title: Automated Issue creation not to create on success
+        body: This issue is created because tests have failed
+        assignees: 'buvananaji'
      
      
       
