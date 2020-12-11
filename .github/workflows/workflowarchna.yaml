@@ -11,7 +11,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    continue-on-error: true
+    #continue-on-error: true
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
@@ -21,7 +21,7 @@ jobs:
     - name: Install dependencies
       run: dotnet restore apis/poi/web/poi.csproj
     - name: Build
-      run: dotnet build --configuration Release --no-restore apis/poi/web/poi.csproj /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
+      run: dotnet build --configuration Release --no-restore apis/poi/web/poi.csproj
     - name: Test      
       run: dotnet test --no-restore --verbosity normal apis/poi/tests/UnitTests/UnitTests.csproj 
     - name: Open Github Issue
@@ -33,4 +33,6 @@ jobs:
           title: Automated Issue creation
           body: This issue is created because tests have failed
           assignees: 'archnaaju'
+    - name: Publish
+      run: dotnet publish --configuration Release --output droppoiapi --PublishSingleFile=true
       
