@@ -21,7 +21,7 @@ jobs:
     - name: Install dependencies
       run: dotnet restore apis/poi/web/poi.csproj
     - name: Build
-      run: dotnet build --configuration Release --no-restore apis/poi/web/poi.csproj
+      run: dotnet build --configuration Release --no-restore apis/poi/web/poi.csproj /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
     - name: Test      
       run: dotnet test --no-restore --verbosity normal apis/poi/tests/UnitTests/UnitTests.csproj 
     - name: Open Github Issue
